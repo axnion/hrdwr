@@ -30,16 +30,13 @@ type procStat struct {
  */
 type CPU struct {
 	Name string
-
 	Usage float64
 }
 
 func NewCpuMon(runner Runner) CpuMon {
-	mon := CpuMon{
+	return CpuMon{
 		runner: runner,
 	}
-
-	return mon
 }
 
 /**
@@ -52,7 +49,6 @@ func (mon CpuMon) GetCpus() ([]CPU, error) {
 	stat1, err := parseProcStat(content)
 
 	time.Sleep(500 * time.Millisecond)
-
 
 	content, _ = run(mon.runner, "cat", "/proc/stat")
 	stat2, err := parseProcStat(content)
