@@ -4,6 +4,7 @@ import (
 	"github.com/axnion/hrdwr/util"
 	"strings"
 	"strconv"
+	"time"
 )
 
 /**
@@ -14,6 +15,18 @@ type CpuMon struct{
  	runner util.Runner
 }
 
+type procStat struct {
+	name string
+	user int
+	nice int
+	system int
+	idle int
+	iowait int
+	irq int
+	softirq int
+	steal int
+}
+
 /**
  * Final representation of a CPU
  */
@@ -21,8 +34,6 @@ type CPU struct {
 	Name string
 
 	Usage float64
-	idle int
-	total int
 }
 
 func NewCpuMon(runner util.Runner) CpuMon {
@@ -34,16 +45,28 @@ func NewCpuMon(runner util.Runner) CpuMon {
 	return mon
 }
 
-func (mon CpuMon) SetRunner(newRunner util.Runner) {
-	mon.runner = newRunner
-}
 /**
  * Returns an array of CPU objects which represents the CPUs of the system.
  */
 func (mon CpuMon) GetCpus() ([]CPU, error) {
-	stat, _ := run(mon.runner, "cat", "/proc/stat")
+	var cpus []CPU
 
-	cpus, err := parseProcStat(stat, mon.cpus)
+	content, _ := run(mon.runner, "cat", "/proc/stat")
+	stat1, err := parseProcStat(content)
+
+	time.Sleep(500 * time.Millisecond)
+
+
+	content, _ = run(mon.runner, "cat", "/proc/stat")
+	stat2, err := parseProcStat(content)
+
+
+	for i := range stat1 {
+		cpus = append(cpus, CPU{
+			stat1[i].name,
+			calcCpuUsage(stat1[i], stat2[i]),
+		})
+	}
 
 	if err != nil {
 		return nil, err
@@ -56,7 +79,8 @@ func (mon CpuMon) GetCpus() ([]CPU, error) {
  * Takes the content of the /proc/stat file and an array of CPU objects. It parses the file content
  * and calculates the cpu usage. The data is then stored in the CPU array.
  */
-func parseProcStat(content []byte, cpus []CPU) ([]CPU, error) {
+func parseProcStat(content []byte) ([]procStat, error) {
+	var stat []procStat
 	str := string(content)
 	lines := strings.Split(str, "\n")
 
@@ -65,14 +89,6 @@ func parseProcStat(content []byte, cpus []CPU) ([]CPU, error) {
 		columns := strings.Split(line, " ")
 
 		if strings.Compare(columns[0], "cpu" + strconv.Itoa(i)) == 0 {
-			if len(cpus) == i {
-				cpus = append(cpus, CPU{
-					Name: columns[0],
-					idle: 0,
-					total: 0,
-				})
-			}
-
 			user, err := strconv.Atoi(columns[1])
 
 			if err != nil {
@@ -114,28 +130,43 @@ func parseProcStat(content []byte, cpus []CPU) ([]CPU, error) {
 			if err != nil {
 				return nil, err
 			}
-
 			steal, err := strconv.Atoi(columns[8])
 
 			if err != nil {
 				return nil, err
 			}
 
-			newIdle := idle + iowait
-			newTotal := newIdle + user + nice + system + irq + softirq + steal
-
-			totalDiff := newTotal - cpus[i].total
-			idleDiff := newIdle - cpus[i].idle
-
-			usage := float64(totalDiff - idleDiff) / float64(totalDiff)
-
-			cpus[i].idle = newIdle
-			cpus[i].total = newTotal
-			cpus[i].Usage = usage
+			stat = append(stat, procStat{
+				name: columns[0],
+				user: user,
+				nice: nice,
+				system: system,
+				idle: idle,
+				iowait: iowait,
+				irq: irq,
+				softirq: softirq,
+				steal: steal,
+			})
 		}
 	}
 
-	return cpus, nil
+	return stat, nil
+}
+
+func calcCpuUsage(prev procStat, cur procStat) float64 {
+	prevIdle := prev.idle + prev.iowait
+	idle := cur.idle + cur.iowait
+
+	prevNonIdle := prev.user + prev.nice + prev.system + prev.irq + prev.softirq + prev.steal
+	nonIdle := cur.user + cur.nice + cur.system + cur.irq + cur.softirq + cur.steal
+
+	prevTotal := prevIdle + prevNonIdle
+	total := idle + nonIdle
+
+	totalDiff := total - prevTotal
+	idleDiff := idle - prevIdle
+
+	return float64(totalDiff - idleDiff) / float64(totalDiff)
 }
 
 /**

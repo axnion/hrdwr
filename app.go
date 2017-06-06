@@ -17,16 +17,16 @@ func main() {
 	for true {
 		cpus, err := cpu.GetCpus()
 
+		clear()
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		for _, el := range cpus {
-			fmt.Printf("%s: %f\n", el.Name, el.Usage)
+			fmt.Printf("%s: %d \n", el.Name, int(el.Usage * 100))
 		}
 
 		time.Sleep(1 * time.Second)
-		clear()
 	}
 }
 
