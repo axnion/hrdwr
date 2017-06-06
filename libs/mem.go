@@ -11,7 +11,7 @@ type MemMon struct {
 
 type Memory struct {
 	Total int
-	Available int
+	Available int	// TODO: Change to used memory
 }
 
 func NewMemMon(runner Runner) MemMon {

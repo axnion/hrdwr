@@ -11,12 +11,13 @@ import (
 
 func main() {
 	runner := libs.RealRunner{}
-	cpu := libs.NewCpuMon(runner)
-	mem := libs.NewMemMon(runner)
+	cpuMon := libs.NewCpuMon(runner)
+	memMon := libs.NewMemMon(runner)
+	diskMon := libs.NewDiskMon(runner)
 
 	for true {
 		// CPU
-		cpus, err := cpu.GetCpus()
+		cpus, err := cpuMon.GetCpus()
 		clear()
 
 		if err != nil {
@@ -30,7 +31,7 @@ func main() {
 		}
 
 		// MEMORY
-		mem, err := mem.GetMemory()
+		mem, err := memMon.GetMemory()
 
 		if err != nil {
 			log.Fatal(err)
@@ -40,6 +41,15 @@ func main() {
 		fmt.Println("\nMEMORY")
 		fmt.Printf("Total: %d\n", mem.Total)
 		fmt.Printf("Available: %d\n", mem.Available)
+
+		// DISK
+		disks, err := diskMon.GetDisks()
+
+		fmt.Println("\nDISK")
+
+		for _, disk := range disks {
+			fmt.Printf("%s: Total: %d Used: %d", disk.Name, disk.Total, disk.Used)
+		}
 
 		time.Sleep(1 * time.Second)
 	}
