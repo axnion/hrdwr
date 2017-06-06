@@ -25,15 +25,15 @@ func TestCpu_GetCpus(t *testing.T) {
 	}
 }
 
-func TestCpu_getCpuinfo(t *testing.T) {
-	runner := TestRunner{}
-	out, err := getCpuinfo(runner)
-
-	if err != nil {
-		t.Fail()
-	}
-
-	if string(out) != "cpuinfo file content" {
-		t.Fail()
-	}
-}
+//func TestCpu_getCpuinfo(t *testing.T) {
+//	runner := TestRunner{}
+//	out, err := getCpuinfo(runner)
+	//
+	//if err != nil {
+	//	t.Fail()
+	//}
+	//
+	//if string(out) != "cpuinfo file content" {
+	//	t.Fail()
+	//}
+//}

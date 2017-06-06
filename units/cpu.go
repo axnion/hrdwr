@@ -1,33 +1,54 @@
 package units
 
-import "github.com/axnion/hrdwr/util"
+import (
+	"github.com/axnion/hrdwr/util"
+	"strings"
+	"fmt"
+	"strconv"
+)
 
-type Cpu struct{
-	cpuinfo []byte
-}
+type CpuMon struct{}
 
-type Core struct {
+type CPU struct {
 	id string
+	usage float32
 }
 
 var runner util.Runner
 
-func (cpu Cpu) GetCpus() ([]byte, error) {
-	if cpu.cpuinfo == nil {
-		cpu.cpuinfo, _ = getCpuinfo(runner)
+func (cpu CpuMon) GetCpus() ([]CPU, error) {
+	stat, _ := run(runner, "cat", "/proc/stat")
+
+	parseProcStat(stat)
+
+	return nil, nil
+}
+
+func parseProcStat(content []byte, cpus []CPU) {
+	str := string(content)
+	lines := strings.Split(str, "\n")
+
+	for i, line := range lines {
+		columns := strings.Split(line, " ")
+
+		if strings.Compare(columns[0], "cpu" + strconv.Itoa(i - 1)) == 0 {
+			fmt.Println(line)
+		}
 	}
-
-	return cpu.cpuinfo, nil
 }
 
-func (cpu Cpu) SetRunner(newRunner util.Runner) {
+func run(runner util.Runner, command string, arg string) ([]byte, error) {
+	return runner.Run(command, arg)
+}
+
+//func parseCpuinfo(content []byte) ([]Core) {
+
+//}
+
+//func getCpuinfo(runner util.Runner) ([]byte, error) {
+//	return runner.Run("cat", "/proc/cpuinfo")
+//}
+
+func (cpu CpuMon) SetRunner(newRunner util.Runner) {
 	runner = newRunner
-}
-
-func parseCpuinfo(content []byte) ([]Core) {
-
-}
-
-func getCpuinfo(runner util.Runner) ([]byte, error) {
-	return runner.Run("cat", "/proc/cpuinfo")
 }
