@@ -1,7 +1,6 @@
-package units
+package libs
 
 import (
-	"github.com/axnion/hrdwr/util"
 	"strings"
 	"strconv"
 	"time"
@@ -11,8 +10,7 @@ import (
  * CpuMon (CPU Monitoring) is the object which holds the methods for fetching data on the CPU
  */
 type CpuMon struct{
-	cpus []CPU
- 	runner util.Runner
+ 	runner Runner
 }
 
 type procStat struct {
@@ -36,9 +34,8 @@ type CPU struct {
 	Usage float64
 }
 
-func NewCpuMon(runner util.Runner) CpuMon {
+func NewCpuMon(runner Runner) CpuMon {
 	mon := CpuMon{
-		cpus: []CPU{},
 		runner: runner,
 	}
 
@@ -169,10 +166,3 @@ func calcCpuUsage(prev procStat, cur procStat) float64 {
 	return float64(totalDiff - idleDiff) / float64(totalDiff)
 }
 
-/**
- * Takes a runner, a command string, and an arguments string. It runs the command using the runner
- * and the argument.
- */
-func run(runner util.Runner, command string, arg string) ([]byte, error) {
-	return runner.Run(command, arg)
-}

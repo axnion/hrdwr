@@ -1,8 +1,7 @@
 package main
 
 import (
-	"github.com/axnion/hrdwr/units"
-	"github.com/axnion/hrdwr/util"
+	"github.com/axnion/hrdwr/libs"
 	"fmt"
 	"log"
 	"time"
@@ -11,13 +10,14 @@ import (
 )
 
 func main() {
-	runner := util.RealRunner{}
-	cpu := units.NewCpuMon(runner)
+	runner := libs.RealRunner{}
+	cpu := libs.NewCpuMon(runner)
 
 	for true {
+		// CPU
 		cpus, err := cpu.GetCpus()
-
 		clear()
+
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -25,6 +25,9 @@ func main() {
 		for _, el := range cpus {
 			fmt.Printf("%s: %d \n", el.Name, int(el.Usage * 100))
 		}
+
+		// MEMORY
+
 
 		time.Sleep(1 * time.Second)
 	}
