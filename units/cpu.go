@@ -6,26 +6,56 @@ import (
 	"strconv"
 )
 
-type CpuMon struct{}
+/**
+ * CpuMon (CPU Monitoring) is the object which holds the methods for fetching data on the CPU
+ */
+type CpuMon struct{
+	cpus []CPU
+ 	runner util.Runner
+}
 
+/**
+ * Final representation of a CPU
+ */
 type CPU struct {
 	Name string
 
 	Usage float64
 	idle int
 	total int
-
 }
 
-var runner util.Runner
-var cpus = []CPU{}
+func NewCpuMon(runner util.Runner) CpuMon {
+	mon := CpuMon{
+		cpus: []CPU{},
+		runner: runner,
+	}
 
-func (cpu CpuMon) GetCpus(cpus []CPU) ([]CPU, error) {
-	stat, _ := run(runner, "cat", "/proc/stat")
-
-	return parseProcStat(stat, cpus)
+	return mon
 }
 
+func (mon CpuMon) SetRunner(newRunner util.Runner) {
+	mon.runner = newRunner
+}
+/**
+ * Returns an array of CPU objects which represents the CPUs of the system.
+ */
+func (mon CpuMon) GetCpus() ([]CPU, error) {
+	stat, _ := run(mon.runner, "cat", "/proc/stat")
+
+	cpus, err := parseProcStat(stat, mon.cpus)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return cpus, nil
+}
+
+/**
+ * Takes the content of the /proc/stat file and an array of CPU objects. It parses the file content
+ * and calculates the cpu usage. The data is then stored in the CPU array.
+ */
 func parseProcStat(content []byte, cpus []CPU) ([]CPU, error) {
 	str := string(content)
 	lines := strings.Split(str, "\n")
@@ -108,18 +138,10 @@ func parseProcStat(content []byte, cpus []CPU) ([]CPU, error) {
 	return cpus, nil
 }
 
+/**
+ * Takes a runner, a command string, and an arguments string. It runs the command using the runner
+ * and the argument.
+ */
 func run(runner util.Runner, command string, arg string) ([]byte, error) {
 	return runner.Run(command, arg)
-}
-
-//func parseCpuinfo(content []byte) ([]Core) {
-
-//}
-
-//func getCpuinfo(runner util.Runner) ([]byte, error) {
-//	return runner.Run("cat", "/proc/cpuinfo")
-//}
-
-func (cpu CpuMon) SetRunner(newRunner util.Runner) {
-	runner = newRunner
 }

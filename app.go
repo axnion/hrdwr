@@ -4,16 +4,34 @@ import (
 	"github.com/axnion/hrdwr/units"
 	"github.com/axnion/hrdwr/util"
 	"fmt"
+	"log"
+	"time"
+	"os/exec"
+	"os"
 )
 
 func main() {
 	runner := util.RealRunner{}
-	cpu := new(units.CpuMon)
-	cpu.SetRunner(runner)
-	cpus := []units.CPU{}
-	cpus, _ = cpu.GetCpus(cpus)
+	cpu := units.NewCpuMon(runner)
 
-	for _, el := range cpus {
-		fmt.Printf("%s: %f\n", el.Name, el.Usage)
+	for true {
+		cpus, err := cpu.GetCpus()
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for _, el := range cpus {
+			fmt.Printf("%s: %f\n", el.Name, el.Usage)
+		}
+
+		time.Sleep(1 * time.Second)
+		clear()
 	}
+}
+
+func clear() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
 }
