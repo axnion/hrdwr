@@ -16,42 +16,43 @@ func main() {
 	diskMon := libs.NewDiskMon(runner)
 
 	for true {
-		// CPU
-		cpus, err := cpuMon.GetCpus()
-		clear()
-
-		if err != nil {
-			log.Fatal(err)
-			panic(err)
-		}
-
-		fmt.Println("CPU")
-		for _, el := range cpus {
-			fmt.Printf("%s: %d \n", el.Name, int(el.Usage * 100))
-		}
-
-		// MEMORY
-		mem, err := memMon.GetMemory()
-
-		if err != nil {
-			log.Fatal(err)
-			panic(err)
-		}
-
-		fmt.Println("\nMEMORY")
-		fmt.Printf("Total: %d\n", mem.Total)
-		fmt.Printf("Available: %d\n", mem.Available)
-
-		// DISK
-		disks, err := diskMon.GetDisks()
-
-		fmt.Println("\nDISK")
-
-		for _, disk := range disks {
-			fmt.Printf("%s: Total: %d Used: %d", disk.Name, disk.Total, disk.Used)
-		}
+		printCpus(cpuMon.GetCpus()) 	// CPU
+		printMemory(memMon.GetMemory())	// Memory
+		printDisk(diskMon.GetDisks())	// Disk
 
 		time.Sleep(1 * time.Second)
+	}
+}
+
+func printCpus(cpus []libs.CPU, err error) {
+	clear()
+	if err != nil {
+		log.Fatal(err)
+		panic(err)
+	}
+
+	fmt.Println("CPU--------------------------------------------------------------------------")
+
+	for _, el := range cpus {
+		fmt.Printf("%s: %d \n", el.Name, int(el.Usage * 100))
+	}
+}
+
+func printMemory(mem libs.Memory, err error) {
+	if err != nil {
+		log.Fatal(err)
+		panic(err)
+	}
+
+	fmt.Println("\nMEMORY-----------------------------------------------------------------------")
+	fmt.Printf("Total: %d\n", mem.Total)
+	fmt.Printf("Available: %d\n", mem.Available)
+}
+
+func printDisk(disks []libs.Disk, err error) {
+	fmt.Println("\nDISK-------------------------------------------------------------------------")
+	for _, disk := range disks {
+		fmt.Printf("%s: \tTotal:%d \tUsed: %d\n", disk.Name, disk.Total, disk.Used)
 	}
 }
 

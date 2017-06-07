@@ -19,3 +19,6 @@ func (RealRunner) Run(cmd string, args ...string) ([]byte, error) {
 func run(runner Runner, command string, arg string) ([]byte, error) {
 	return runner.Run(command, arg)
 }
+func cmd(runner Runner, command string) ([]byte, error) {
+	return runner.Run(command)
+}
