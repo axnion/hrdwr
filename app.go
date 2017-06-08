@@ -7,11 +7,13 @@ import (
 	"time"
 	"os/exec"
 	"os"
+	"github.com/axnion/hrdwr/libs/parse"
 )
 
 func main() {
 	runner := libs.RealRunner{}
-	cpuMon := libs.NewCpuMon(runner)
+	parser := parse.RealParser{}
+	cpuMon := libs.NewCpuMon(runner, parser)
 	memMon := libs.NewMemMon(runner)
 	diskMon := libs.NewDiskMon(runner)
 

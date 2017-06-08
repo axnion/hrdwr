@@ -22,7 +22,7 @@ func NewDiskMon(runner Runner) DiskMon{
 }
 
 func (mon DiskMon) GetDisks() ([]Disk, error) {
-	content, err := cmd(mon.runner, "df")
+	content, err := run(mon.runner, "df")
 
 	if err != nil {
 		return nil, err
