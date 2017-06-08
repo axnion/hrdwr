@@ -1,5 +1,4 @@
 [![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/axnion/hrdwr.svg?branch=master)
-[![Codecov](https://img.shields.io/codecov/c/github/codecov/example-python.svg)](https://codecov.io/gh/axnion/hrdwr)
 # HRDWR
 HRDWR (pronounced hardware, who needs vowels anyways?) is a small monitoring API for Linux systems. It's written in Go in my spare time as a fun side project.
 
