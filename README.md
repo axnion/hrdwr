@@ -1,5 +1,5 @@
 # HRDWR
-HRDWR (pronounces hardware) is a small monitoring API for Linux systems, written in Go
+HRDWR (pronounced hardware, who needs vowels anyways?) is a small monitoring API for Linux systems. It's written in Go in my spare time as a fun side project.
 
 ## Features
 * Fetching and calculation of CPU usage
