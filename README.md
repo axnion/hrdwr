@@ -1,4 +1,4 @@
-# hrdwr
+# HRDWR
 HRDWR (pronounces hardware) is a small monitoring API for Linux systems, written in Go
 
 ## Features
