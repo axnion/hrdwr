@@ -50,6 +50,11 @@ func printMemory(mem libs.Memory, err error) {
 }
 
 func printDisk(disks []libs.Disk, err error) {
+	if err != nil {
+		log.Fatal(err)
+		panic(err)
+	}
+
 	fmt.Println("\nDISK-------------------------------------------------------------------------")
 	for _, disk := range disks {
 		fmt.Printf("%s: \tTotal:%d \tUsed: %d\n", disk.Name, disk.Total, disk.Used)

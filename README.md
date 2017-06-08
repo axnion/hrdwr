@@ -1,5 +1,17 @@
 # hrdwr
-HRDWR (pronounces hardware) is a small monitoring API for Linux systems
+HRDWR (pronounces hardware) is a small monitoring API for Linux systems, written in Go
+
+## Features
+* Fetching and calculation of CPU usage
+* Fetching total and used memory
+* Fetching total and used disk storage
+
+## Planned Features
+* Web sockets for communication
+* Fetching temperature data
+* Fetching fan data
+* Storing history
+* Web client
 
 ## Download
 1. Have go installed

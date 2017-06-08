@@ -13,6 +13,9 @@ type CpuMon struct{
  	runner Runner
 }
 
+/**
+ * A row from /proc/stat represented in memory.
+ */
 type procStat struct {
 	name string
 	user int
@@ -33,6 +36,9 @@ type CPU struct {
 	Usage float64
 }
 
+/**
+ * Constructor function
+ */
 func NewCpuMon(runner Runner) CpuMon {
 	return CpuMon{
 		runner: runner,
@@ -146,6 +152,9 @@ func parseProcStat(content []byte) ([]procStat, error) {
 	return stat, nil
 }
 
+/**
+ * Calculates the CPU utilization based on two readings of /proc/stat
+ */
 func calcCpuUsage(prev procStat, cur procStat) float64 {
 	prevIdle := prev.idle + prev.iowait
 	idle := cur.idle + cur.iowait
