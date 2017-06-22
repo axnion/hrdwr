@@ -6,24 +6,23 @@ import (
 	"log"
 	"os/exec"
 	"os"
-	"time"
 )
 
-// TODO: Add lm sensors install to .travis.yml
-
 func main() {
-	for true {
-		printCpus(lib.GetCpus())             	// CPU
-		printMemory(lib.GetMemory())      	// Memory
-		printDisk(lib.GetDisks())        	// Disk
-		printSensors(lib.GetSensors()) 		// Sensors (temp, fans, volt)
+	printCpus(lib.GetCpus())
 
-		time.Sleep(1 * time.Second)
-	}
+	//for true {
+	//	printCpus(lib.GetCpus())             	// CPU
+	//	printMemory(lib.GetMemory())      	// Memory
+	//	printDisk(lib.GetDisks())        	// Disk
+	//	printSensors(lib.GetSensors()) 		// Sensors (temp, fans, volt)
+
+	//	time.Sleep(1 * time.Second)		// Wait 1 second
+	//}
 }
 
 func printCpus(cpus []lib.CPU, err error) {
-	clear()
+	//clear()
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
