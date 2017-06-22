@@ -6,7 +6,6 @@ import (
 	"strconv"
 )
 
-var runner Runner = RealRunner{}
 
 /**
  * Final representation of a CPU

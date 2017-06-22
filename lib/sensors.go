@@ -9,15 +9,6 @@ var gosensorsInit = gosensors.Init
 var gosensorsCleanup = gosensors.Cleanup
 var gosensorsGetDetectedChips = gosensors.GetDetectedChips
 
-type SensorMon struct {
-}
-
-type SensorLib interface {
-	Init()
-	Cleanup()
-	GetDetectedChips()
-}
-
 type Sensors struct {
 	Temps []Sensor
 	Fans []Sensor
@@ -29,11 +20,7 @@ type Sensor struct {
 	Value float64
 }
 
-func NewSensorMon() SensorMon {
-	return SensorMon {}
-}
-
-func (mon SensorMon) GetSensors() Sensors {
+func GetSensors() Sensors {
 	return getSensors()
 }
 

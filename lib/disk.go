@@ -5,9 +5,7 @@ import (
 	"strconv"
 )
 
-type DiskMon struct {
-	runner Runner
-}
+//var runner Runner = RealRunner{}
 
 type Disk struct {
 	Name string
@@ -15,14 +13,8 @@ type Disk struct {
 	Used int
 }
 
-func NewDiskMon(runner Runner) DiskMon{
-	return DiskMon{
-		runner: runner,
-	}
-}
-
-func (mon DiskMon) GetDisks() ([]Disk, error) {
-	content, err := run(mon.runner, "df")
+func GetDisks() ([]Disk, error) {
+	content, err := run(runner, "df")
 
 	if err != nil {
 		return nil, err

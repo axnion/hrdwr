@@ -12,16 +12,11 @@ import (
 // TODO: Rewrite to a library to be used in a separate project to make the application
 
 func main() {
-	runner := lib.RealRunner{}
-	memMon := lib.NewMemMon(runner)
-	diskMon := lib.NewDiskMon(runner)
-	sensorMon := lib.NewSensorMon()
-
 	for true {
 		printCpus(lib.GetCpus())             // CPU
-		printMemory(memMon.GetMemory())      // Memory
-		printDisk(diskMon.GetDisks())        // Disk
-		printSensors(sensorMon.GetSensors()) // Sensors (temp, fans, volt)
+		printMemory(lib.GetMemory())      // Memory
+		printDisk(lib.GetDisks())        // Disk
+		printSensors(lib.GetSensors()) // Sensors (temp, fans, volt)
 
 		time.Sleep(1 * time.Second)
 	}

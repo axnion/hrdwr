@@ -5,23 +5,13 @@ import (
 	"strconv"
 )
 
-type MemMon struct {
-	runner Runner
-}
-
 type Memory struct {
 	Total int
 	Available int	// TODO: Change to used memory
 }
 
-func NewMemMon(runner Runner) MemMon {
-	return MemMon{
-		runner: runner,
-	}
-}
-
-func (mon MemMon) GetMemory() (Memory, error) {
-	content, _ := run(mon.runner, "cat", "/proc/meminfo")
+func GetMemory() (Memory, error) {
+	content, _ := run(runner, "cat", "/proc/meminfo")
 	return parseMeminfo(content)
 }
 
