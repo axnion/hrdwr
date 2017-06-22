@@ -1,16 +1,18 @@
 [![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/axnion/hrdwr.svg?branch=master)
 # HRDWR
-HRDWR (pronounced hardware, who needs vowels anyways?) is a small monitoring API for Linux systems. It's written in Go in my spare time as a fun side project.
+HRDWR (pronounced hardware, who needs vowels anyways?) is a small monitoring API for Linux systems written in Go. It's a small side project to help me improve as a programmer both in general but more specifically in Go, therefor suggestions and criticism are welcomed.
 
 ## Features
-* Fetching and calculation of CPU usage
-* Fetching total and used memory
-* Fetching total and used disk storage
+* Data aggregation
+    * CPU usage
+    * Memory usage
+    * Disk space used
+    * Temperature sensor data
+    * Fan sensor data
+    * Voltage sensor data
 
 ## Planned Features
 * Web sockets for communication
-* Fetching temperature data
-* Fetching fan data
 * Storing history
 * Web client
 
