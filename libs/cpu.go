@@ -39,12 +39,12 @@ func (mon CpuMon) GetCpus() ([]CPU, error) {
 	var cpus []CPU
 
 	content, _ := run(mon.runner, "cat", "/proc/stat")
-	stat1, err := mon.parser.ParseProcStat(content)
+	stat1, err := mon.parser.ProcStat(content)
 
 	time.Sleep(500 * time.Millisecond)
 
 	content, _ = run(mon.runner, "cat", "/proc/stat")
-	stat2, err := mon.parser.ParseProcStat(content)
+	stat2, err := mon.parser.ProcStat(content)
 
 
 	for i := range stat1 {
@@ -60,4 +60,3 @@ func (mon CpuMon) GetCpus() ([]CPU, error) {
 
 	return cpus, nil
 }
-

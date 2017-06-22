@@ -24,7 +24,7 @@ type procStat struct {
  * Takes the content of the /proc/stat file and an array of CPU objects. It parses the file content
  * and calculates the cpu usage. The data is then stored in the CPU array.
  */
-func (RealParser) ParseProcStat(content []byte) ([]procStat, error) {
+func (RealParser) ProcStat(content []byte) ([]procStat, error) {
 	var stat []procStat
 	str := string(content)
 	lines := strings.Split(str, "\n")
@@ -35,51 +35,28 @@ func (RealParser) ParseProcStat(content []byte) ([]procStat, error) {
 
 		if strings.Compare(columns[0], "cpu" + strconv.Itoa(i)) == 0 {
 			user, err := strconv.Atoi(columns[1])
-
-			if err != nil {
-				return nil, err
-			}
+			if err != nil {return nil, err}
 
 			nice, err := strconv.Atoi(columns[2])
-
-			if err != nil {
-				return nil, err
-			}
+			if err != nil {return nil, err}
 
 			system, err := strconv.Atoi(columns[3])
-
-			if err != nil {
-				return nil, err
-			}
+			if err != nil {return nil, err}
 
 			idle, err := strconv.Atoi(columns[4])
-
-			if err != nil {
-				return nil, err
-			}
+			if err != nil {return nil, err}
 
 			iowait, err := strconv.Atoi(columns[5])
-
-			if err != nil {
-				return nil, err
-			}
+			if err != nil {return nil, err}
 
 			irq, err := strconv.Atoi(columns[6])
-
-			if err != nil {
-				return nil, err
-			}
+			if err != nil {return nil, err}
 
 			softirq, err := strconv.Atoi(columns[7])
+			if err != nil {return nil, err}
 
-			if err != nil {
-				return nil, err
-			}
 			steal, err := strconv.Atoi(columns[8])
-
-			if err != nil {
-				return nil, err
-			}
+			if err != nil {return nil, err}
 
 			stat = append(stat, procStat{
 				Name: columns[0],

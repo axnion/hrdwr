@@ -1,7 +1,7 @@
 package parse
 
 type Parser interface {
-	ParseProcStat([]byte) ([]procStat, error)
+	ProcStat([]byte) ([]procStat, error)
 	CalcCpuUsage(procStat, procStat) float64
 }
 

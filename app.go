@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/axnion/hrdwr/libs"
+	"github.com/axnion/hrdwr/libs/parse"
 	"fmt"
 	"log"
-	"time"
 	"os/exec"
 	"os"
-	"github.com/axnion/hrdwr/libs/parse"
+	"time"
 )
 
 func main() {
@@ -16,11 +16,13 @@ func main() {
 	cpuMon := libs.NewCpuMon(runner, parser)
 	memMon := libs.NewMemMon(runner)
 	diskMon := libs.NewDiskMon(runner)
+	sensorMon := libs.NewSensorMon()
 
 	for true {
-		printCpus(cpuMon.GetCpus()) 	// CPU
-		printMemory(memMon.GetMemory())	// Memory
-		printDisk(diskMon.GetDisks())	// Disk
+		printCpus(cpuMon.GetCpus()) 		// CPU
+		printMemory(memMon.GetMemory())		// Memory
+		printDisk(diskMon.GetDisks())		// Disk
+		printSensors(sensorMon.GetSensors())	// Sensors (temp, fans, volt)
 
 		time.Sleep(1 * time.Second)
 	}
@@ -36,7 +38,7 @@ func printCpus(cpus []libs.CPU, err error) {
 	fmt.Println("CPU--------------------------------------------------------------------------")
 
 	for _, el := range cpus {
-		fmt.Printf("%s: %d \n", el.Name, int(el.Usage * 100))
+		fmt.Printf("%s: %d\n", el.Name, int(el.Usage * 100))
 	}
 }
 
@@ -60,6 +62,24 @@ func printDisk(disks []libs.Disk, err error) {
 	fmt.Println("\nDISK-------------------------------------------------------------------------")
 	for _, disk := range disks {
 		fmt.Printf("%s: \tTotal:%d \tUsed: %d\n", disk.Name, disk.Total, disk.Used)
+	}
+}
+
+func printSensors(sensors libs.Sensors) {
+	fmt.Println("\nSensors-----------------------------------------------------------------------")
+	fmt.Print("Temperatures")
+	for _, temp := range sensors.Temps {
+		fmt.Printf("\n\t%v: %v", temp.Label, temp.Value)
+	}
+
+	fmt.Print("\nFans")
+	for _, fans := range sensors.Fans{
+		fmt.Printf("\n\t%v: %v", fans.Label, fans.Value)
+	}
+
+	fmt.Print("\nVoltage")
+	for _, volt:= range sensors.Volt {
+		fmt.Printf("\n\t%v: %v", volt.Label, volt.Value)
 	}
 }
 
