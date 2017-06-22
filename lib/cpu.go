@@ -1,15 +1,23 @@
-package parse
+package lib
 
 import (
+	"time"
 	"strings"
 	"strconv"
 )
 
+var runner Runner = RealRunner{}
+
 /**
- * A row from /proc/stat represented in memory.
+ * Final representation of a CPU
  */
-type procStat struct {
+type CPU struct {
 	Name string
+	Usage float64
+}
+
+type procStat struct {
+	name string
 	user int
 	nice int
 	system int
@@ -21,10 +29,40 @@ type procStat struct {
 }
 
 /**
+ * Returns an array of CPU objects which represents the CPUs of the system.
+ */
+func GetCpus() ([]CPU, error) {
+	var cpus []CPU
+
+	content, _ := run(runner, "cat", "/proc/stat")
+	stat1, err := parseProcStat(content)
+
+	time.Sleep(500 * time.Millisecond)
+
+	content, _ = run(runner, "cat", "/proc/stat")
+	stat2, err := parseProcStat(content)
+
+
+	for i := range stat1 {
+		cpus = append(cpus, CPU{
+			stat1[i].name,
+			calcCpuUsage(stat1[i], stat2[i]),
+		})
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return cpus, nil
+}
+
+
+/**
  * Takes the content of the /proc/stat file and an array of CPU objects. It parses the file content
  * and calculates the cpu usage. The data is then stored in the CPU array.
  */
-func (RealParser) ProcStat(content []byte) ([]procStat, error) {
+func parseProcStat(content []byte) ([]procStat, error) {
 	var stat []procStat
 	str := string(content)
 	lines := strings.Split(str, "\n")
@@ -59,7 +97,7 @@ func (RealParser) ProcStat(content []byte) ([]procStat, error) {
 			if err != nil {return nil, err}
 
 			stat = append(stat, procStat{
-				Name: columns[0],
+				name: columns[0],
 				user: user,
 				nice: nice,
 				system: system,
@@ -78,7 +116,7 @@ func (RealParser) ProcStat(content []byte) ([]procStat, error) {
 /**
  * Calculates the CPU utilization based on two readings of /proc/stat
  */
-func (RealParser) CalcCpuUsage(prev procStat, cur procStat) float64 {
+func calcCpuUsage(prev procStat, cur procStat) float64 {
 	prevIdle := prev.idle + prev.iowait
 	idle := cur.idle + cur.iowait
 

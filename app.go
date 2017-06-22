@@ -1,8 +1,7 @@
 package main
 
 import (
-	"github.com/axnion/hrdwr/libs"
-	"github.com/axnion/hrdwr/libs/parse"
+	"github.com/axnion/hrdwr/lib"
 	"fmt"
 	"log"
 	"os/exec"
@@ -10,25 +9,25 @@ import (
 	"time"
 )
 
+// TODO: Rewrite to a library to be used in a separate project to make the application
+
 func main() {
-	runner := libs.RealRunner{}
-	parser := parse.RealParser{}
-	cpuMon := libs.NewCpuMon(runner, parser)
-	memMon := libs.NewMemMon(runner)
-	diskMon := libs.NewDiskMon(runner)
-	sensorMon := libs.NewSensorMon()
+	runner := lib.RealRunner{}
+	memMon := lib.NewMemMon(runner)
+	diskMon := lib.NewDiskMon(runner)
+	sensorMon := lib.NewSensorMon()
 
 	for true {
-		printCpus(cpuMon.GetCpus()) 		// CPU
-		printMemory(memMon.GetMemory())		// Memory
-		printDisk(diskMon.GetDisks())		// Disk
-		printSensors(sensorMon.GetSensors())	// Sensors (temp, fans, volt)
+		printCpus(lib.GetCpus())             // CPU
+		printMemory(memMon.GetMemory())      // Memory
+		printDisk(diskMon.GetDisks())        // Disk
+		printSensors(sensorMon.GetSensors()) // Sensors (temp, fans, volt)
 
 		time.Sleep(1 * time.Second)
 	}
 }
 
-func printCpus(cpus []libs.CPU, err error) {
+func printCpus(cpus []lib.CPU, err error) {
 	clear()
 	if err != nil {
 		log.Fatal(err)
@@ -42,7 +41,7 @@ func printCpus(cpus []libs.CPU, err error) {
 	}
 }
 
-func printMemory(mem libs.Memory, err error) {
+func printMemory(mem lib.Memory, err error) {
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
@@ -53,7 +52,7 @@ func printMemory(mem libs.Memory, err error) {
 	fmt.Printf("Available: %d\n", mem.Available)
 }
 
-func printDisk(disks []libs.Disk, err error) {
+func printDisk(disks []lib.Disk, err error) {
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
@@ -65,7 +64,7 @@ func printDisk(disks []libs.Disk, err error) {
 	}
 }
 
-func printSensors(sensors libs.Sensors) {
+func printSensors(sensors lib.Sensors) {
 	fmt.Println("\nSensors-----------------------------------------------------------------------")
 	fmt.Print("Temperatures")
 	for _, temp := range sensors.Temps {

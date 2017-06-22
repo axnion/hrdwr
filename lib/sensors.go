@@ -1,4 +1,4 @@
-package libs
+package lib
 
 import (
 	"github.com/md14454/gosensors"

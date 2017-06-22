@@ -1,4 +1,4 @@
-package parse
+package lib
 
 type Parser interface {
 	ProcStat([]byte) ([]procStat, error)

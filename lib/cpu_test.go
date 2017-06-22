@@ -1,10 +1,10 @@
-package libs
+package lib
 
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
 	"strconv"
-	"github.com/axnion/hrdwr/libs/parse"
+	"github.com/axnion/hrdwr/lib/parse"
 )
 
 /*
@@ -24,10 +24,12 @@ func (runner TestRunner) Run(cmd string, args ...string) ([]byte, error) {
  * - Test Suite ------------------------------------------------------------------------------------
  */
 
+func init() {
+}
+
 func TestNewCpuMon(t *testing.T) {
-	runner := TestRunner{0}
-	parser := parse.TestParser{}
-	cpu := NewCpuMon(runner, parser)
+	mrunner = TestRunner{0}
+	mparser = parse.TestParser{}
 
 	if &cpu == nil {
 		t.Fail()
