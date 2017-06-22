@@ -3,6 +3,7 @@ language: go
 before_install:
   - go get github.com/modocache/gover
   - go get github.com/axnion/hrdwr
+  - sudo apt-get install -y lm-sensors
 script:
   - go vet github.com/axnion/hrdwr
   - go test -v ./...

@@ -9,14 +9,14 @@ import (
 	"time"
 )
 
-// TODO: Rewrite to a library to be used in a separate project to make the application
+// TODO: Add lm sensors install to .travis.yml
 
 func main() {
 	for true {
-		printCpus(lib.GetCpus())             // CPU
-		printMemory(lib.GetMemory())      // Memory
-		printDisk(lib.GetDisks())        // Disk
-		printSensors(lib.GetSensors()) // Sensors (temp, fans, volt)
+		printCpus(lib.GetCpus())             	// CPU
+		printMemory(lib.GetMemory())      	// Memory
+		printDisk(lib.GetDisks())        	// Disk
+		printSensors(lib.GetSensors()) 		// Sensors (temp, fans, volt)
 
 		time.Sleep(1 * time.Second)
 	}
