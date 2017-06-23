@@ -11,7 +11,7 @@ type Memory struct {
 }
 
 func GetMemory() (Memory, error) {
-	content, _ := run(runner, "cat", "/proc/meminfo")
+	content, _ := runner.run("cat", "/proc/meminfo")
 	return parseMeminfo(content)
 }
 

@@ -7,7 +7,6 @@ import (
 	"fmt"
 )
 
-
 /**
  * Final representation of a CPU
  */
@@ -34,13 +33,13 @@ type procStat struct {
 func GetCpus() ([]CPU, error) {
 	var cpus []CPU
 
-	content, _ := run(runner, "cat", "/proc/stat")
+	content, _ := runner.run("cat", "/proc/stat")
 	fmt.Println(string(content))
 	stat1, err := parseProcStat(content)
 
 	time.Sleep(500 * time.Millisecond)
 
-	content, _ = run(runner, "cat", "/proc/stat")
+	content, _ = runner.run("cat", "/proc/stat")
 	fmt.Println(string(content))
 	stat2, err := parseProcStat(content)
 

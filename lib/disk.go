@@ -14,7 +14,7 @@ type Disk struct {
 }
 
 func GetDisks() ([]Disk, error) {
-	content, err := run(runner, "df")
+	content, err := runner.run("df")
 
 	if err != nil {
 		return nil, err
