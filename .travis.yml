@@ -12,7 +12,7 @@ script:
   - go vet github.com/axnion/hrdwr
   - go test -v ./...
   - chmod -x test.sh
-  - ./test.sh
+  - sudo ./test.sh
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 notifications:
