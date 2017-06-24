@@ -31,7 +31,7 @@ func (runner *CpuTestRunner) run(cmd string, args ...string) ([]byte, error) {
  * - Test Suite ------------------------------------------------------------------------------------
  */
 
-func prepareRunner(stat1 []byte, stat2 []byte, err error) {
+func prepareCPURunner(stat1 []byte, stat2 []byte, err error) {
 	runner = &CpuTestRunner{0, stat1, stat2, err}
 }
 
@@ -44,20 +44,14 @@ func TestGetCpus(t *testing.T) {
 		"cpu0 28017 10 3814 194916 517 0 856 0 0 0\n" +
 		"cpu1 27232 9 3839 202548 285 0 478 0 0 0\n"
 
-	prepareRunner([]byte(stat1), []byte(stat2), nil)
+	prepareCPURunner([]byte(stat1), []byte(stat2), nil)
 
 	cpus, err := GetCpus()
 
-	if err != nil {
-		t.Fail()
-	}
-
+	assert.Nil(t, err)
 	assert.Equal(t, 2, len(cpus))
-
 	assert.Equal(t, "cpu0", cpus[0].Name)
 	assert.Equal(t, "cpu1", cpus[1].Name)
-
-	//assert.Equal(t, float64(10), cpus[0].Usage)
 	assert.Equal(t, float64(0.4791666666666667), cpus[0].Usage)
 	assert.Equal(t, float64(0.3), cpus[1].Usage)
 }
