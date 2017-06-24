@@ -1,19 +1,21 @@
 language: go
 dist: trusty
 sudo: required
+go:
+  - 1.8.x
+  - tip
 
 before_install:
-  - sudo apt-get install -y libsensors4
   - sudo apt-get install -y libsensors4-dev
-  - go get github.com/modocache/gover
   - go get github.com/axnion/hrdwr
   - go get -t -v ./...
+
 script:
-  - go vet github.com/axnion/hrdwr
-  - go test -v ./...
   - chmod +x test.sh
-  - sudo ./test.sh
+  - ./test.sh
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
 notifications:
   email: false
