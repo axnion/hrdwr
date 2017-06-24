@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/axnion/hrdwr.svg?branch=master)
+[![Build Status](https://travis-ci.org/axnion/hrdwr.svg?branch=master)](https://travis-ci.org/axnion/hrdwr)
 # HRDWR
 HRDWR (pronounced hardware, who needs vowels anyways?) is a small monitoring API for Linux systems written in Go. It's a small side project to help me improve as a programmer both in general but more specifically in Go, therefor suggestions and criticism are welcomed.
 
