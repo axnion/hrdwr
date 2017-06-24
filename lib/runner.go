@@ -2,6 +2,8 @@ package lib
 
 import "os/exec"
 
+var runner Runner = RealRunner{}
+
 type Runner interface {
 	run(string, ...string) ([]byte, error)
 }
