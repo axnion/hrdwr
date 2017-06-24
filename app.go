@@ -43,7 +43,7 @@ func printMemory(mem lib.Memory, err error) {
 
 	fmt.Println("\nMEMORY-----------------------------------------------------------------------")
 	fmt.Printf("Total: %d\n", mem.Total)
-	fmt.Printf("Available: %d\n", mem.Available)
+	fmt.Printf("Used: %d\n", mem.Used)
 }
 
 func printDisk(disks []lib.Disk, err error) {

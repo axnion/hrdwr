@@ -7,7 +7,7 @@ import (
 
 type Memory struct {
 	Total int
-	Available int	// TODO: Change to used memory
+	Used int	// TODO: Change to used memory
 }
 
 func GetMemory() (Memory, error) {
@@ -40,7 +40,7 @@ func parseMeminfo(content []byte) (Memory, error) {
 				return memory, err
 			}
 
-			memory.Available = available
+			memory.Used = memory.Total - available
 		}
 	}
 
