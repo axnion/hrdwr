@@ -21,10 +21,6 @@ type Sensor struct {
 }
 
 func GetSensors() Sensors {
-	return getSensors()
-}
-
-func getSensors() Sensors {
 	var sensors Sensors
 	gosensorsInit()
 	defer gosensorsCleanup()
