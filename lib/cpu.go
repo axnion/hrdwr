@@ -4,17 +4,21 @@ import (
 	"time"
 	"strings"
 	"strconv"
-	"fmt"
 )
 
 /**
- * Final representation of a CPU
+ * The CPU struct represents one CPU core. It has the name of the code, for example cpu0, and the usage. The usage is
+ * measured so 0 = 0%, 1 = 100% 0.5 = 50%.
  */
 type CPU struct {
 	Name string
 	Usage float64
 }
 
+/**
+ * The procStat object is used to store information about one core as it is represented in the /proc/stat file. This
+ * is to make management of the data easier when calculating the current usage of the CPU.
+ */
 type procStat struct {
 	name string
 	user int
@@ -28,21 +32,23 @@ type procStat struct {
 }
 
 /**
- * Returns an array of CPU objects which represents the CPUs of the system.
+ * Finds and returns all CPU cores and their current usage. This is code by reading the contence of the /proc/stat file
+ * twice and with that data calculate the usage for each core.
  */
 func GetCpus() ([]CPU, error) {
 	var cpus []CPU
 
-	content, _ := runner.run("cat", "/proc/stat")
-	fmt.Println(string(content))
+	content, err := runner.run("cat", "/proc/stat")
+	if err != nil {return nil, err}
 	stat1, err := parseProcStat(content)
+	if err != nil {return nil, err}
 
 	time.Sleep(500 * time.Millisecond)
 
-	content, _ = runner.run("cat", "/proc/stat")
-	fmt.Println(string(content))
+	content, err = runner.run("cat", "/proc/stat")
+	if err != nil {return nil, err}
 	stat2, err := parseProcStat(content)
-
+	if err != nil {return nil, err}
 
 	for i := range stat1 {
 		cpus = append(cpus, CPU{
@@ -51,17 +57,15 @@ func GetCpus() ([]CPU, error) {
 		})
 	}
 
-	if err != nil {
-		return nil, err
-	}
+	if err != nil {return nil, err}
 
 	return cpus, nil
 }
 
 
 /**
- * Takes the content of the /proc/stat file and an array of CPU objects. It parses the file content
- * and calculates the cpu usage. The data is then stored in the CPU array.
+ * Takes the content of a /proc/stat file and an array of CPU objects. It parses the file content and stores the data
+ * in memory as procStat objects.
  */
 func parseProcStat(content []byte) ([]procStat, error) {
 	var stat []procStat
@@ -115,7 +119,8 @@ func parseProcStat(content []byte) ([]procStat, error) {
 }
 
 /**
- * Calculates the CPU utilization based on two readings of /proc/stat
+ * Calculates the utilization of a CPU by taking two reading of the /proc/stat file in the form of two procStat objects
+ * and then comparing the data to calculate the total usage of the core.
  */
 func calcCpuUsage(prev procStat, cur procStat) float64 {
 	prevIdle := prev.idle + prev.iowait

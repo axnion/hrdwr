@@ -2,8 +2,8 @@ package lib
 
 import (
 	"testing"
-	"github.com/md14454/gosensors"
 	"github.com/stretchr/testify/assert"
+	"github.com/md14454/gosensors"
 )
 
 /*
@@ -39,6 +39,7 @@ func prepareGosensorMocks() {
  * - Test Suite ------------------------------------------------------------------------------------
  */
 
+// TODO: Find a way to mock Chip and Feature objects returned from gosensors.GetDetectedChips()
 func TestGetSensors(t *testing.T) {
 	prepareGosensorMocks()
 

@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	printCpus(lib.GetCpus())
+	lib.GetSensors()
 
 	//for true {
 	//	printCpus(lib.GetCpus())             	// CPU
