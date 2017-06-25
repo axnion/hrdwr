@@ -7,7 +7,7 @@ import (
 )
 
 /*
- * - Test Runner -----------------------------------------------------------------------------------
+ * - Test Runner -------------------------------------------------------------------------------------------------------
  */
 
 /**
@@ -26,16 +26,16 @@ func (runner *DiskTestRunner) run(cmd string, args ...string) ([]byte, error) {
 	return runner.results, runner.err
 }
 
-/*
- * - Test Suite ------------------------------------------------------------------------------------
- */
-
 /**
  * Replaces runner with DiskTestRunner so executions uses these mocks.
  */
 func prepareDiskRunner(results []byte, err error) {
 	runner = &DiskTestRunner{results, err}
 }
+
+/*
+ * - Test Suite --------------------------------------------------------------------------------------------------------
+ */
 
 /**
  * Main test method. Runner returns a example results of a df command and then parses this string. The results is then
