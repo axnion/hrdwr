@@ -11,7 +11,7 @@ import (
  */
 
 /**
- * A struct which replaces the original Runner object used in the CPU package.
+ * A struct which replaces the original Runner object used in the CPU test package.
  */
 type CpuTestRunner struct {
 	executions int
