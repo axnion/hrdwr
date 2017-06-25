@@ -57,8 +57,6 @@ func GetCpus() ([]CPU, error) {
 		})
 	}
 
-	if err != nil {return nil, err}
-
 	return cpus, nil
 }
 

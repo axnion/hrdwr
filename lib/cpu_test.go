@@ -117,9 +117,9 @@ func TestGetCpusSecondRunError(t *testing.T) {
 }
 
 /**
- * Tests if runner experiences an error during the first parsing.
+ * Tests if runner experiences an error on the user column during the first parsing.
  */
-func TestGetCpusFirstParsingError(t *testing.T) {
+func TestGetCpusFirstParsingUserError(t *testing.T) {
 	stat1 := "cpu  207034 80 33423 1623348 1809 0 1643 0 0 0\n" +
 		"cpu0 27aa995 10 3813 194891 517 0 856 0 0 0\n" +
 		"cpu1 27219 9 3837 202513 285 0 478 0 0 0\n"
@@ -137,15 +137,155 @@ func TestGetCpusFirstParsingError(t *testing.T) {
 }
 
 /**
- * Tests if runner experiences an error during the second parsing.
+ * Tests if runner experiences an error on the user column during the second parsing.
  */
-func TestGetCpusSecondParsingError(t *testing.T) {
+func TestGetCpusSecondParsingUserError(t *testing.T) {
 	stat1 := "cpu  207034 80 33423 1623348 1809 0 1643 0 0 0\n" +
 		"cpu0 27995 10 3813 194891 517 0 856 0 0 0\n" +
 		"cpu1 27219 9 3837 202513 285 0 478 0 0 0\n"
 
 	stat2 := "cpu  207180 80 33435 1623603 1809 0 1644 0 0 0\n" +
 		"cpu0 28a017 10 3814 194916 517 0 856 0 0 0\n" +
+		"cpu1 27232 9 3839 202548 285 0 478 0 0 0\n"
+
+	prepareCPURunner([]byte(stat1), []byte(stat2), nil, nil)
+
+	cpus, err := GetCpus()
+
+	assert.Nil(t, cpus)
+	assert.NotNil(t, err)
+}
+
+/**
+ * Tests if runner experiences an error on the nice column
+ */
+func TestGetCpusParsingNiceError(t *testing.T) {
+	stat1 := "cpu  207034 80 33423 1623348 1809 0 1643 0 0 0\n" +
+		"cpu0 27995 1i0 3813 194891 517 0 856 0 0 0\n" +
+		"cpu1 27219 9 3837 202513 285 0 478 0 0 0\n"
+
+	stat2 := "cpu  207180 80 33435 1623603 1809 0 1644 0 0 0\n" +
+		"cpu0 28017 10 3814 194916 517 0 856 0 0 0\n" +
+		"cpu1 27232 9 3839 202548 285 0 478 0 0 0\n"
+
+	prepareCPURunner([]byte(stat1), []byte(stat2), nil, nil)
+
+	cpus, err := GetCpus()
+
+	assert.Nil(t, cpus)
+	assert.NotNil(t, err)
+}
+
+/**
+ * Tests if runner experiences an error on the system column
+ */
+func TestGetCpusParsingSystemError(t *testing.T) {
+	stat1 := "cpu  207034 80 33423 1623348 1809 0 1643 0 0 0\n" +
+		"cpu0 27995 10 38i13 194891 517 0 856 0 0 0\n" +
+		"cpu1 27219 9 3837 202513 285 0 478 0 0 0\n"
+
+	stat2 := "cpu  207180 80 33435 1623603 1809 0 1644 0 0 0\n" +
+		"cpu0 28017 10 3814 194916 517 0 856 0 0 0\n" +
+		"cpu1 27232 9 3839 202548 285 0 478 0 0 0\n"
+
+	prepareCPURunner([]byte(stat1), []byte(stat2), nil, nil)
+
+	cpus, err := GetCpus()
+
+	assert.Nil(t, cpus)
+	assert.NotNil(t, err)
+}
+
+/**
+ * Tests if runner experiences an error on the idle column
+ */
+func TestGetCpusParsingIdleError(t *testing.T) {
+	stat1 := "cpu  207034 80 33423 1623348 1809 0 1643 0 0 0\n" +
+		"cpu0 27995 10 3813 1948i91 517 0 856 0 0 0\n" +
+		"cpu1 27219 9 3837 202513 285 0 478 0 0 0\n"
+
+	stat2 := "cpu  207180 80 33435 1623603 1809 0 1644 0 0 0\n" +
+		"cpu0 28017 10 3814 194916 517 0 856 0 0 0\n" +
+		"cpu1 27232 9 3839 202548 285 0 478 0 0 0\n"
+
+	prepareCPURunner([]byte(stat1), []byte(stat2), nil, nil)
+
+	cpus, err := GetCpus()
+
+	assert.Nil(t, cpus)
+	assert.NotNil(t, err)
+}
+
+/**
+ * Tests if runner experiences an error on the iowait column
+ */
+func TestGetCpusParsingIowaitError(t *testing.T) {
+	stat1 := "cpu  207034 80 33423 1623348 1809 0 1643 0 0 0\n" +
+		"cpu0 27995 10 3813 194891 51i7 0 856 0 0 0\n" +
+		"cpu1 27219 9 3837 202513 285 0 478 0 0 0\n"
+
+	stat2 := "cpu  207180 80 33435 1623603 1809 0 1644 0 0 0\n" +
+		"cpu0 28017 10 3814 194916 517 0 856 0 0 0\n" +
+		"cpu1 27232 9 3839 202548 285 0 478 0 0 0\n"
+
+	prepareCPURunner([]byte(stat1), []byte(stat2), nil, nil)
+
+	cpus, err := GetCpus()
+
+	assert.Nil(t, cpus)
+	assert.NotNil(t, err)
+}
+
+/**
+ * Tests if runner experiences an error on the irq column
+ */
+func TestGetCpusParsingIrqError(t *testing.T) {
+	stat1 := "cpu  207034 80 33423 1623348 1809 0 1643 0 0 0\n" +
+		"cpu0 27995 10 3813 194891 517 0i 856 0 0 0\n" +
+		"cpu1 27219 9 3837 202513 285 0 478 0 0 0\n"
+
+	stat2 := "cpu  207180 80 33435 1623603 1809 0 1644 0 0 0\n" +
+		"cpu0 28017 10 3814 194916 517 0 856 0 0 0\n" +
+		"cpu1 27232 9 3839 202548 285 0 478 0 0 0\n"
+
+	prepareCPURunner([]byte(stat1), []byte(stat2), nil, nil)
+
+	cpus, err := GetCpus()
+
+	assert.Nil(t, cpus)
+	assert.NotNil(t, err)
+}
+
+/**
+ * Tests if runner experiences an error on the softirq column
+ */
+func TestGetCpusParsingSoftirqError(t *testing.T) {
+	stat1 := "cpu  207034 80 33423 1623348 1809 0 1643 0 0 0\n" +
+		"cpu0 27995 10 3813 194891 517 0 85i6 0 0 0\n" +
+		"cpu1 27219 9 3837 202513 285 0 478 0 0 0\n"
+
+	stat2 := "cpu  207180 80 33435 1623603 1809 0 1644 0 0 0\n" +
+		"cpu0 28017 10 3814 194916 517 0 856 0 0 0\n" +
+		"cpu1 27232 9 3839 202548 285 0 478 0 0 0\n"
+
+	prepareCPURunner([]byte(stat1), []byte(stat2), nil, nil)
+
+	cpus, err := GetCpus()
+
+	assert.Nil(t, cpus)
+	assert.NotNil(t, err)
+}
+
+/**
+ * Tests if runner experiences an error on the steal column
+ */
+func TestGetCpusParsingStealError(t *testing.T) {
+	stat1 := "cpu  207034 80 33423 1623348 1809 0 1643 0 0 0\n" +
+		"cpu0 27995 10 3813 194891 517 0 856 0i 0 0\n" +
+		"cpu1 27219 9 3837 202513 285 0 478 0 0 0\n"
+
+	stat2 := "cpu  207180 80 33435 1623603 1809 0 1644 0 0 0\n" +
+		"cpu0 28017 10 3814 194916 517 0 856 0 0 0\n" +
 		"cpu1 27232 9 3839 202548 285 0 478 0 0 0\n"
 
 	prepareCPURunner([]byte(stat1), []byte(stat2), nil, nil)
