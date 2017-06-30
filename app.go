@@ -9,13 +9,11 @@ import (
 )
 
 func main() {
-	lib.GetSensors()
-
 	//for true {
 	//	printCpus(lib.GetCpus())             	// CPU
 	//	printMemory(lib.GetMemory())      	// Memory
 	//	printDisk(lib.GetDisks())        	// Disk
-	//	printSensors(lib.GetSensors()) 		// Sensors (temp, fans, volt)
+		printSensors(lib.GetSensors()) 		// Sensors (temp, fans, volt)
 
 	//	time.Sleep(1 * time.Second)		// Wait 1 second
 	//}

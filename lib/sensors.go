@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"github.com/md14454/gosensors"
+	"github.com/axnion/gosensors"
 	"strings"
 )
 
@@ -27,18 +27,18 @@ func GetSensors() Sensors {
 	chips := gosensorsGetDetectedChips()
 
 	for _, chip := range chips {
-		features := chip.GetFeatures()
+		features := chip.Features
 		for _, feature := range features {
 			if strings.Contains(feature.Name, "temp") {
-				sensors.Temps = append(sensors.Temps, Sensor{feature.GetLabel(), feature.GetValue()})
+				sensors.Temps = append(sensors.Temps, Sensor{feature.Lable, feature.Value})
 			}
 
 			if strings.Contains(feature.Name, "fan") {
-				sensors.Fans = append(sensors.Fans, Sensor{feature.GetLabel(), feature.GetValue()})
+				sensors.Fans = append(sensors.Fans, Sensor{feature.Lable, feature.Value})
 			}
 
 			if strings.Contains(feature.Name, "in") {
-				sensors.Volt = append(sensors.Volt, Sensor{feature.GetLabel(), feature.GetValue()})
+				sensors.Volt = append(sensors.Volt, Sensor{feature.Lable, feature.Value})
 			}
 		}
 	}
