@@ -6,21 +6,22 @@ import (
 	"log"
 	"os/exec"
 	"os"
+	"time"
 )
 
 func main() {
-	//for true {
-	//	printCpus(lib.GetCpus())             	// CPU
-	//	printMemory(lib.GetMemory())      	// Memory
-	//	printDisk(lib.GetDisks())        	// Disk
+	for true {
+		printCpus(lib.GetCpus())             	// CPU
+		printMemory(lib.GetMemory())      	// Memory
+		printDisk(lib.GetDisks())        	// Disk
 		printSensors(lib.GetSensors()) 		// Sensors (temp, fans, volt)
 
-	//	time.Sleep(1 * time.Second)		// Wait 1 second
-	//}
+		time.Sleep(1 * time.Second)		// Wait 1 second
+	}
 }
 
 func printCpus(cpus []lib.CPU, err error) {
-	//clear()
+	clear()
 	if err != nil {
 		log.Fatal(err)
 		panic(err)

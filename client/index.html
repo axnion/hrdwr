@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webhooks</title>
+</head>
+<body>
+    <script>
+        sock = new WebSocket("ws://localhost:8080/ws")
+        
+        sock.onopen = function () {
+            console.log("Socket open")
+        }
+
+        sock.onclose = function () {
+            console.log("Socket closed")
+        }
+
+        sock.onmessage = function (e) {
+            console.log(e.data)
+        }
+        
+        
+    </script>
+</body>
+</html>
