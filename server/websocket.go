@@ -1,12 +1,11 @@
-package main
+package server
 
 import (
-	"flag"
-	"net/http"
-	"github.com/gorilla/websocket"
 	"log"
+	"github.com/gorilla/websocket"
+	"github.com/axnion/hrdwr/server/lib"
 	"time"
-	"github.com/axnion/hrdwr/lib"
+	"net/http"
 )
 
 type payload struct {
@@ -16,37 +15,12 @@ type payload struct {
 	Sensors lib.Sensors
 }
 
-var addr = flag.String("addr", ":8080", "http service address")
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 }
 
-func main() {
-	http.HandleFunc("/", serveClient)
-	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		serveWebSocket(w, r)
-	})
-	err := http.ListenAndServe(*addr, nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
-}
-
-func serveClient(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL)
-	if r.URL.Path != "/" {
-		http.Error(w, "Not found", 404)
-		return
-	}
-	if r.Method != "GET" {
-		http.Error(w, "Method not allowed", 405)
-		return
-	}
-	http.ServeFile(w, r, "client/index.html")
-}
-
-func serveWebSocket(w http.ResponseWriter, r *http.Request) {
+func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 
 	if err != nil {
