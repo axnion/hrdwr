@@ -8,12 +8,18 @@ import (
 )
 
 var addr = flag.String("addr", ":8080", "http service address")
+var clientBuild = "client/build/"
 
 func main() {
+	fs := http.FileServer(http.Dir(clientBuild + "static"))
+
 	http.HandleFunc("/", serveClient)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		server.ServeWebSocket(w, r)
 	})
+
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
@@ -22,13 +28,5 @@ func main() {
 
 func serveClient(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.URL)
-	if r.URL.Path != "/" {
-		http.Error(w, "Not found", 404)
-		return
-	}
-	if r.Method != "GET" {
-		http.Error(w, "Method not allowed", 405)
-		return
-	}
-	http.ServeFile(w, r, "client/index.html")
+	http.ServeFile(w, r, clientBuild + "index.html")
 }
