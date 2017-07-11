@@ -1,21 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+    constructor() {
+        super()
+        this.state = {
+            data: null
+        }
+    }
+
+    componentDidMount() {
+        this.connection = new WebSocket("wss://echo.websocket.org")
+
+        this.connection.onmessage = e => {
+            this.update(e)
+        }
+
+        sendInterval(this.connection)
+    }
+
+    update(e) {
+        this.setState({data: e.data})
+    }
+
+    render() {
+        return (
+            <div>
+                {this.state.data}
+            </div>
+        )
+    }
 }
+
+const sendInterval = function(connection) {
+    setInterval( _ =>{
+        connection.send("{cpu: 300}")
+    }, 2000 )
+}
+
+// TODO: Create stats mocking wihhc is sent to echo.websocket.org for testing
 
 export default App;
