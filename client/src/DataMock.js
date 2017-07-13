@@ -11,7 +11,7 @@ const createDataMock = function() {
 
     disks.push({Name: "/dev/sdc1", Total: 223390420, Used: createInt(20000, 223390400)})
 
-    memory.push({Total: 12298264, Used: createInt(1000, 12298264)})
+    memory = {Total: 12298264, Used: createInt(1000, 12298264)}
 
     let temps = []
     temps.push({Lable: "CPU Temperature", Value: createInt(20, 99)})
@@ -33,6 +33,13 @@ const createDataMock = function() {
     sensors.Temps = temps
     sensors.Fans = fans
     sensors.Volt = volts
+
+    data.Cpus = cpus
+    data.Disks = disks
+    data.Memory = memory
+    data.Sensors = sensors
+
+    return data
 
 }
 

@@ -5,7 +5,12 @@ class App extends Component {
     constructor() {
         super()
         this.state = {
-            data: null
+            data: {
+                cpus: [],
+                disks: [],
+                memory: {},
+                sensors: {}
+            }
         }
     }
 
@@ -20,13 +25,13 @@ class App extends Component {
     }
 
     update(e) {
-        this.setState({data: e.data})
+        this.setState({data: JSON.parse(e.data)})
     }
 
     render() {
         return (
             <div>
-                {this.state.data}
+                {JSON.stringify(this.state.data)}
             </div>
         )
     }
@@ -34,11 +39,9 @@ class App extends Component {
 
 const sendInterval = function(connection) {
     setInterval( _ =>{
-        connection.send(createDataMock())
+        connection.send(JSON.stringify(createDataMock()))
     }, 2000 )
 }
-
-
 
 
 export default App;
