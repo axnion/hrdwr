@@ -1,17 +1,21 @@
 package server
 
 import (
+	"encoding/json"
 	"log"
-	"github.com/gorilla/websocket"
-	"github.com/axnion/hrdwr/server/lib"
-	"time"
 	"net/http"
+	"time"
+
+	"fmt"
+
+	"github.com/axnion/hrdwr/server/lib"
+	"github.com/gorilla/websocket"
 )
 
 type payload struct {
-	Cpus 	[]lib.CPU
-	Disks 	[]lib.Disk
-	Memory 	lib.Memory
+	Cpus    []lib.CPU
+	Disks   []lib.Disk
+	Memory  lib.Memory
 	Sensors lib.Sensors
 }
 
@@ -34,24 +38,31 @@ func ServeWebSocket(w http.ResponseWriter, r *http.Request) {
 func streamStats(conn *websocket.Conn) {
 	for {
 		cpus, err := lib.GetCpus()
-		if err != nil {log.Fatal("Error fetching CPU data")}
+		if err != nil {
+			log.Fatal("Error fetching CPU data")
+		}
 
 		disks, err := lib.GetDisks()
-		if err != nil {log.Fatal("Error fetching disk data")}
+		if err != nil {
+			log.Fatal("Error fetching disk data")
+		}
 
 		memory, err := lib.GetMemory()
-		if err != nil {log.Fatal("Error fetching memory data")}
+		if err != nil {
+			log.Fatal("Error fetching memory data")
+		}
 
 		sensors := lib.GetSensors()
 
-		data := payload {
+		data := payload{
 			cpus,
 			disks,
 			memory,
 			sensors,
 		}
 
-
+		jsonStr, _ := json.MarshalIndent(data, "", "\t")
+		fmt.Println(jsonStr)
 
 		conn.WriteJSON(data)
 		time.Sleep(time.Second)

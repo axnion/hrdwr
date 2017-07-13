@@ -1,0 +1,76 @@
+
+{                                                                                                                                                                                                                                                                                           
+  "Cpus": [                                                                                                                                                                                                                                                                                 
+    {                                                                                                                                                                                                                                                                                       
+      "Name": "cpu0",                                                                                                                                                                                                                                                                       
+      "Usage": 0.09615384615384616                                                                                                                                                                                                                                                          
+    },                                                                                                                                                                                                                                                                                      
+    {                                                                                                                                                                                                                                                                                       
+      "Name": "cpu1",                                                                                                                                                                                                                                                                       
+      "Usage": 0.02040816326530612                                                                                                                                                                                                                                                          
+    }                                                                                                                                                                                                                                                                                      
+  ],                                                                                                                                                                                                                                                                                        
+  "Disks": [                                                                                                                                                                                                                                                                                
+    {                                                                                                                                                                                                                                                                                       
+      "Name": "/dev/sdc2",                                                                                                                                                                                                                                                                  
+      "Total": 223390420,                                                                                                                                                                                                                                                                   
+      "Used": 14090296                                                                                                                                                                                                                                                                      
+    }                                                                                                                                                                               
+  ],                                                                   
+  "Memory": {                                                          
+    "Total": 12298264,                                                 
+    "Used": 4036452                                                    
+  },                                       
+  "Sensors": {                                                         
+    "Temps": [                                                         
+      {                                                                
+        "Label": "CPU Temperature",                                    
+        "Value": 41                                                    
+      },                                                               
+      {                                                                
+        "Label": "MB Temperature",                                     
+        "Value": 36                                                    
+      },                                                               
+      {                                                                
+        "Label": "Core 0",                                             
+        "Value": 51                                                    
+      },                                                               
+      {
+        "Label": "Core 1",
+        "Value": 49
+      }
+    ],
+    "Fans": [
+      {
+        "Label": "CPU FAN Speed",
+        "Value": 2481
+      },
+      {
+        "Label": "CHASSIS1 FAN Speed",
+        "Value": 0
+      },
+      {
+        "Label": "POWER FAN Speed",
+        "Value": 1054
+      }
+    ],
+    "Volt": [
+      {
+        "Label": "Vcore Voltage",
+        "Value": 1.24
+      },
+      {
+        "Label": " +3.3 Voltage",
+        "Value": 3.28
+      },
+      {
+        "Label": " +5 Voltage",
+        "Value": 5.07
+      },
+      {
+        "Label": " +12 Voltage",
+        "Value": 12.081
+      }
+    ]
+  }
+}

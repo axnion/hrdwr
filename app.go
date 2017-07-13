@@ -2,8 +2,9 @@ package main
 
 import (
 	"flag"
-	"net/http"
 	"log"
+	"net/http"
+
 	"github.com/axnion/hrdwr/server"
 )
 
@@ -24,9 +25,10 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+
 }
 
 func serveClient(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.URL)
-	http.ServeFile(w, r, clientBuild + "index.html")
+	http.ServeFile(w, r, clientBuild+"index.html")
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import createDataMock from "./DataMock"
 
 class App extends Component {
     constructor() {
@@ -33,10 +34,11 @@ class App extends Component {
 
 const sendInterval = function(connection) {
     setInterval( _ =>{
-        connection.send("{cpu: 300}")
+        connection.send(createDataMock())
     }, 2000 )
 }
 
-// TODO: Create stats mocking wihhc is sent to echo.websocket.org for testing
+
+
 
 export default App;
