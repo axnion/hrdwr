@@ -31,7 +31,21 @@ class App extends Component {
     render() {
         return (
             <div>
-                {JSON.stringify(this.state.data)}
+                <div id="stat_container">
+                    <div id="cpu" className="stat_group">
+                    </div>
+                    <div id="disk" className="stat_group">
+                    </div>
+                    <div id="memory" className="stat_group">
+                    </div>
+                    <div id="temp" className="stat_group">
+                    </div>
+                    <div id="fans" className="stat_group">
+                    </div>
+                    <div id="volt" className="stat_group">
+                    </div>
+                </div>
+                {this.state.data}
             </div>
         )
     }
