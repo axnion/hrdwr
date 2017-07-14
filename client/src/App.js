@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import createDataMock from "./DataMock"
+import Cpu from './components/Cpu'
+import './App.css'
 
 class App extends Component {
     constructor() {
         super()
         this.state = {
-            data: {
-                cpus: [],
-                disks: [],
-                memory: {},
-                sensors: {}
-            }
+            data: undefined
         }
     }
 
@@ -29,25 +26,31 @@ class App extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <div id="stat_container">
-                    <div id="cpu" className="stat_group">
-                    </div>
-                    <div id="disk" className="stat_group">
-                    </div>
-                    <div id="memory" className="stat_group">
-                    </div>
-                    <div id="temp" className="stat_group">
-                    </div>
-                    <div id="fans" className="stat_group">
-                    </div>
-                    <div id="volt" className="stat_group">
+        if(!this.state.data) {
+            return (
+                <h1>Loading</h1>
+            )
+        } else {
+            return (
+                <div>
+                    <div id="stat_container">
+                        <div id="cpu" className="stat_group">
+                            {this.state.data.Cpus.map(cpu => <Cpu key={cpu.Name} name={cpu.Name} usage={cpu.Usage} />)}
+                        </div>
+                        <div id="disk" className="stat_group">
+                        </div>
+                        <div id="memory" className="stat_group">
+                        </div>
+                        <div id="temp" className="stat_group">
+                        </div>
+                        <div id="fans" className="stat_group">
+                        </div>
+                        <div id="volt" className="stat_group">
+                        </div>
                     </div>
                 </div>
-                {this.state.data}
-            </div>
-        )
+            )
+        }
     }
 }
 
@@ -58,4 +61,4 @@ const sendInterval = function(connection) {
 }
 
 
-export default App;
+export default App
