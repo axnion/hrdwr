@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import createDataMock from "./DataMock"
 import Cpu from './components/Cpu'
+import Disk from './components/Disk'
+import Memory from './components/Memory'
+import Temp from './components/Temp'
+import Fan from './components/Fan'
+import Volt from './components/Volt'
 import './App.css'
 
 class App extends Component {
@@ -34,19 +39,68 @@ class App extends Component {
             return (
                 <div>
                     <div id="stat_container">
-                        <div id="cpu" className="stat_group">
-                            {this.state.data.Cpus.map(cpu => <Cpu key={cpu.Name} name={cpu.Name} usage={cpu.Usage} />)}
+                        <div id="cpu">
+                            <h5>CPU</h5>
+                            {this.state.data.Cpus.map(
+                                cpu => <Cpu 
+                                    key={cpu.Name} 
+                                    name={cpu.Name} 
+                                    usage={cpu.Usage} 
+                                />
+                            )}
                         </div>
-                        <div id="disk" className="stat_group">
+                        <div id="disk">
+                            <h5>ROM</h5>
+                            {this.state.data.Disks.map(
+                                disk => <Disk 
+                                    key={disk.Name} 
+                                    name={disk.Name} 
+                                    total={disk.Total} 
+                                    used={disk.Used} 
+                                />
+                            )}
                         </div>
-                        <div id="memory" className="stat_group">
+                        <div id="memory">
+                            <h5>RAM</h5>
+                            <Memory 
+                                total={this.state.data.Memory.Total}
+                                used={this.state.data.Memory.Used}
+                            />
                         </div>
-                        <div id="temp" className="stat_group">
+                        <div id="temp">
+                            <h5>Temperature</h5>
+                            {this.state.data.Sensors.Temps.map(
+                                temp => <Temp 
+                                    key={temp.Label}
+                                    label={temp.Lable}
+                                    value={temp.Value}
+                                />
+                            )}
                         </div>
-                        <div id="fans" className="stat_group">
+                        <div id="fans">
+                            <h5>Fans</h5>
+                            {this.state.data.Sensors.Fans.map(
+                                fan => <Fan 
+                                    key={fan.Label}
+                                    label={fan.Lable}
+                                    value={fan.Value}
+                                />
+                            )}
                         </div>
-                        <div id="volt" className="stat_group">
+                        <div id="volt">
+                            <h5>Voltage</h5>
+                            {this.state.data.Sensors.Volt.map(
+                                volt => <Volt 
+                                    key={volt.Label}
+                                    label={volt.Lable}
+                                    value={volt.Value}
+                                />
+                            )}
                         </div>
+                    </div>
+                    
+                    <div id="graph_container">
+                        <p>testing</p>
                     </div>
                 </div>
             )
@@ -57,7 +111,7 @@ class App extends Component {
 const sendInterval = function(connection) {
     setInterval( _ =>{
         connection.send(JSON.stringify(createDataMock()))
-    }, 2000 )
+    }, 1000 )
 }
 
 

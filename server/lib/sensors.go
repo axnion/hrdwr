@@ -1,8 +1,9 @@
 package lib
 
 import (
-	"github.com/axnion/gosensors"
 	"strings"
+
+	"github.com/axnion/gosensors"
 )
 
 var gosensorsInit = gosensors.Init
@@ -11,8 +12,8 @@ var gosensorsGetDetectedChips = gosensors.GetDetectedChips
 
 type Sensors struct {
 	Temps []Sensor
-	Fans []Sensor
-	Volt []Sensor
+	Fans  []Sensor
+	Volt  []Sensor
 }
 
 type Sensor struct {
@@ -20,6 +21,7 @@ type Sensor struct {
 	Value float64
 }
 
+// TODO: Fix spelling on Label
 func GetSensors() Sensors {
 	var sensors Sensors
 	gosensorsInit()
