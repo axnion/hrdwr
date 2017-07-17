@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/axnion/hrdwr.svg?branch=master)](https://travis-ci.org/axnion/hrdwr)
 [![Codecov](https://img.shields.io/codecov/c/github/axnion/hrdwr.svg)](https://codecov.io/gh/axnion/hrdwr)
 # HRDWR
-HRDWR (pronounced hardware, because who needs vowels anyways?) is a small monitoring application for Linux systems written in Go. It's a small side project to help me improve as a programmer both in general but more specifically in Go, therefor suggestions and criticism are welcomed.
+HRDWR (pronounced hardware, because who needs vowels anyways?) gathers data on hardware used in Linux systems and stores it in InfluxDB.
 
 ## Features
 * Data aggregation
@@ -11,17 +11,10 @@ HRDWR (pronounced hardware, because who needs vowels anyways?) is a small monito
     * Temperature sensor data
     * Fan sensor data
     * Voltage sensor data
+* Storing data
+    * InfluxDB (not implemented)
 
-## Planned Features
-* Web sockets for communication
-* Storing history
-* Web client
-
-## Download
-1. Have go installed
-1. Run `go get github.com/axnion/hrdwr`
-1. Naviagate to project `$GOPATH/src/github.com/axnion/hrdwr`
-
-## Notes
-* Run all tests: `go test ./...`
-* Build application: `go build` & `./hrdwr`
+## Install 
+```bash
+$ go get github.com/axnion/hrdwr
+```
