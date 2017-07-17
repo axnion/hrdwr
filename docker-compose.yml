@@ -1,0 +1,9 @@
+version: '2'
+services:
+  hrdwr:
+    build: .
+    links:
+      - influxdb
+  influx:
+    image: influxdb:latest
+  
