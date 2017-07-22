@@ -1,9 +1,9 @@
 package lib
 
 import (
-	"time"
-	"strings"
 	"strconv"
+	"strings"
+	"time"
 )
 
 /**
@@ -11,7 +11,7 @@ import (
  * measured so 0 = 0%, 1 = 100% 0.5 = 50%.
  */
 type CPU struct {
-	Name string
+	Name  string
 	Usage float64
 }
 
@@ -20,15 +20,15 @@ type CPU struct {
  * is to make management of the data easier when calculating the current usage of the CPU.
  */
 type procStat struct {
-	name string
-	user int
-	nice int
-	system int
-	idle int
-	iowait int
-	irq int
+	name    string
+	user    int
+	nice    int
+	system  int
+	idle    int
+	iowait  int
+	irq     int
 	softirq int
-	steal int
+	steal   int
 }
 
 /**
@@ -39,16 +39,24 @@ func GetCpus() ([]CPU, error) {
 	var cpus []CPU
 
 	content, err := runner.run("cat", "/proc/stat")
-	if err != nil {return nil, err}
+	if err != nil {
+		return nil, err
+	}
 	stat1, err := parseProcStat(content)
-	if err != nil {return nil, err}
+	if err != nil {
+		return nil, err
+	}
 
 	time.Sleep(500 * time.Millisecond)
 
 	content, err = runner.run("cat", "/proc/stat")
-	if err != nil {return nil, err}
+	if err != nil {
+		return nil, err
+	}
 	stat2, err := parseProcStat(content)
-	if err != nil {return nil, err}
+	if err != nil {
+		return nil, err
+	}
 
 	for i := range stat1 {
 		cpus = append(cpus, CPU{
@@ -60,7 +68,6 @@ func GetCpus() ([]CPU, error) {
 	return cpus, nil
 }
 
-
 /**
  * Takes the content of a /proc/stat file and an array of CPU objects. It parses the file content and stores the data
  * in memory as procStat objects.
@@ -71,44 +78,60 @@ func parseProcStat(content []byte) ([]procStat, error) {
 	lines := strings.Split(str, "\n")
 
 	for index, line := range lines {
-		i := index -1
+		i := index - 1
 		columns := strings.Split(line, " ")
 
-		if strings.Compare(columns[0], "cpu" + strconv.Itoa(i)) == 0 {
+		if strings.Compare(columns[0], "cpu"+strconv.Itoa(i)) == 0 {
 			user, err := strconv.Atoi(columns[1])
-			if err != nil {return nil, err}
+			if err != nil {
+				return nil, err
+			}
 
 			nice, err := strconv.Atoi(columns[2])
-			if err != nil {return nil, err}
+			if err != nil {
+				return nil, err
+			}
 
 			system, err := strconv.Atoi(columns[3])
-			if err != nil {return nil, err}
+			if err != nil {
+				return nil, err
+			}
 
 			idle, err := strconv.Atoi(columns[4])
-			if err != nil {return nil, err}
+			if err != nil {
+				return nil, err
+			}
 
 			iowait, err := strconv.Atoi(columns[5])
-			if err != nil {return nil, err}
+			if err != nil {
+				return nil, err
+			}
 
 			irq, err := strconv.Atoi(columns[6])
-			if err != nil {return nil, err}
+			if err != nil {
+				return nil, err
+			}
 
 			softirq, err := strconv.Atoi(columns[7])
-			if err != nil {return nil, err}
+			if err != nil {
+				return nil, err
+			}
 
 			steal, err := strconv.Atoi(columns[8])
-			if err != nil {return nil, err}
+			if err != nil {
+				return nil, err
+			}
 
 			stat = append(stat, procStat{
-				name: columns[0],
-				user: user,
-				nice: nice,
-				system: system,
-				idle: idle,
-				iowait: iowait,
-				irq: irq,
+				name:    columns[0],
+				user:    user,
+				nice:    nice,
+				system:  system,
+				idle:    idle,
+				iowait:  iowait,
+				irq:     irq,
 				softirq: softirq,
-				steal: steal,
+				steal:   steal,
 			})
 		}
 	}
@@ -133,6 +156,5 @@ func calcCpuUsage(prev procStat, cur procStat) float64 {
 	totalDiff := total - prevTotal
 	idleDiff := idle - prevIdle
 
-	return float64(totalDiff - idleDiff) / float64(totalDiff)
+	return float64(totalDiff-idleDiff) / float64(totalDiff)
 }
-

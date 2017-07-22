@@ -1,9 +1,16 @@
 version: '2'
 services:
-  hrdwr:
-    build: .
-    links:
-      - influxdb
+  #hrdwr:
+  #  build: .
+  #  links:
+  #    - influx
   influx:
     image: influxdb:latest
-  
+    ports:
+      - "8086:8086"
+  grafana:
+    image: grafana/grafana
+    links:
+      - "influx"
+    ports:
+      - "3000:3000"
