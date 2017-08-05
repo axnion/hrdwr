@@ -1,9 +1,10 @@
-package lib
+package hrdwr
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
 	"errors"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 /*
@@ -15,10 +16,10 @@ import (
  */
 type CpuTestRunner struct {
 	executions int
-	stat1 []byte
-	stat2 []byte
-	err1 error
-	err2 error
+	stat1      []byte
+	stat2      []byte
+	err1       error
+	err2       error
 }
 
 /**
@@ -28,7 +29,7 @@ type CpuTestRunner struct {
 func (runner *CpuTestRunner) run(cmd string, args ...string) ([]byte, error) {
 	runner.executions++
 
-	if runner.executions % 2 == 0 {
+	if runner.executions%2 == 0 {
 		return []byte(runner.stat2), runner.err1
 	} else {
 		return []byte(runner.stat1), runner.err2
